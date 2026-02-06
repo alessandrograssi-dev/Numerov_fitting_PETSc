@@ -19,12 +19,13 @@ UNAME := $(shell uname)
 SEDI := sed -i # Default to GNU sed
 
 ifeq ($(UNAME), Darwin)
-    SEDI := sed -i ''  # Use GNU sed on macOS if installed via Homebrew
+	SEDI := sed -i ''  # Use GNU sed on macOS if installed via Homebrew
 endif
 
 
 all: create_folders
-	@$(MAKE) -j -C build all NAME=$(NAME) 
+	cmake -S . -B build 
+	cmake --build build -j 4
 
 print_os:
 	@echo "Operating System: $(UNAME). Using $(SEDI) for sed commands."
@@ -69,7 +70,7 @@ compare:
 
 
 clean:
-	@$(MAKE) -C build clean
+	@$(RM) -rf build
 
 del_out:
 	@$(RM) -v output/*.dat
